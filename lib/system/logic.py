@@ -59,6 +59,7 @@ class SystemLogic(object):
         'trans_type' : '0',
         'trans_google_api_key' : '',
         'trans_papago_key' : '',
+        'trans_googlewebv2_cookie': '',
 
         #인증
         'auth_use_apikey' : 'False',

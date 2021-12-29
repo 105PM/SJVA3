@@ -243,12 +243,16 @@ class SystemLogicTrans(object):
     def trans_google_web2(text, source='ja', target='ko'):
         try:
             import requests
+            googlewebv2_cookie = ModelSetting.get('trans_googlewebv2_cookie')
             url = 'https://translate.google.com/translate_a/single'
-            headers = {'User-Agent': 'GoogleTranslate/6.27.0.08.415126308 (Linux; U; Android 7.1.2; PIXEL 2 XL)'}
+            headers = {'User-Agent': 'GoogleTranslate/6.27.0.08.415126308 (Linux; U; Android 7.1.2; PIXEL 2 XL)',
+            'Cookie': googlewebv2_cookie}
             params = {'q': text, 'sl': source, 'tl': target,
                     'hl': 'ko-KR', 'ie': 'UTF-8', 'oe': 'UTF-8', 'client': 'at',
                     'dt': ('t', 'ld', 'qca', 'rm', 'bd', 'md', 'ss', 'ex', 'sos')}
-            
+            if text == '':
+                return
+
             response = requests.get(url, params=params, headers=headers).json()
             translated_text = ''
             for sentence in response[0][:-1]:
