@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #########################################################
-import os, traceback, io, re
+import os, traceback, io, re, json, codecs
 from . import logger
 
 class ToolBaseFile(object):
@@ -18,14 +18,21 @@ class ToolBaseFile(object):
         except Exception as exception: 
             logger.error('Exception:%s', exception)
             logger.error(traceback.format_exc())
-
+            
 
     @classmethod
     def download(cls, url, filepath):
         try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+                'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language' : 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Connection': 'Keep-Alive',
+            }
+
             import requests
             with open(filepath, "wb") as file_is:   # open in binary mode
-                response = requests.get(url)               # get request
+                response = requests.get(url, headers=headers)               # get request
                 file_is.write(response.content)      # write to file
                 return True
         except Exception as exception:
@@ -140,3 +147,72 @@ class ToolBaseFile(object):
         except:
             return False
           
+    
+    @classmethod
+    def write_json(cls, filepath, data):
+        try:
+            if os.path.exists(os.path.dirname(filepath)) == False:
+                os.makedirs(os.path.dirname(filepath))
+            with open(filepath, "w", encoding='utf8') as json_file:
+                json.dump(data, json_file, indent=4, ensure_ascii=False)
+        except Exception as exception: 
+            logger.error('Exception:%s', exception)
+            logger.error(traceback.format_exc()) 
+
+    @classmethod
+    def read_json(cls, filepath):
+        try:
+            with open(filepath, "r", encoding='utf8') as json_file:
+                data = json.load(json_file)
+                return data
+        except Exception as exception: 
+            logger.error('Exception:%s', exception)
+            logger.error(traceback.format_exc()) 
+    
+
+    @classmethod
+    def write_file(cls, filename, data):
+        try:
+            import codecs
+            ofp = codecs.open(filename, 'w', encoding='utf8')
+            ofp.write(data)
+            ofp.close()
+        except Exception as exception: 
+            logger.error('Exception:%s', exception)
+            logger.error(traceback.format_exc()) 
+
+    @classmethod
+    def read_file(cls, filename):
+        try:
+            ifp = codecs.open(filename, 'r', encoding='utf8')
+            data = ifp.read()
+            ifp.close()
+            return data
+        except Exception as exception: 
+            logger.error('Exception:%s', exception)
+            logger.error(traceback.format_exc())
+
+    
+
+    @classmethod
+    def makezip_simple(cls, zip_path, zip_extension='cbz', remove_zip_path=True):
+        import zipfile, shutil
+        try:
+            if os.path.exists(zip_path) == False:
+                return False
+            zipfilepath = os.path.join(os.path.dirname(zip_path), f"{os.path.basename(zip_path)}.{zip_extension}")
+            if os.path.exists(zipfilepath):
+                return True
+            zip = zipfile.ZipFile(zipfilepath, 'w')
+            for f in os.listdir(zip_path):
+                src = os.path.join(zip_path, f)
+                zip.write(src, f, compress_type = zipfile.ZIP_DEFLATED)
+            zip.close()
+            if remove_zip_path:
+                shutil.rmtree(zip_path)
+            return zipfilepath
+        except Exception as e:
+            logger.error(f'Exception:{str(e)}')
+            logger.error(traceback.format_exc())
+        return None
+        
