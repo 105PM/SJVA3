@@ -166,29 +166,8 @@ def init_define():
 
     app.config['DEFINE']['RSS_SUBTITLE_UPLOAD_WEBHOOK'] = 'https://discordapp.com/api/webhooks/689800985887113329/GBTUBpP9L0dOegqL4sH-u1fwpssPKq0gBOGPb50JQjim22gUqskYCtj-wnup6BsY3vvc'
 
-    app.config['DEFINE']['WEBHOOK_LIST_FOR_IMAGE_PROXY'] = [
-        'https://discord.com/api/webhooks/806952424455274557/_h8e1IGzf6H40xy0y2rgYuFKdzXdOFZcrRvUYx7e6rqO-_ddzseu9ZuGkeqBfyMfvJZd',
-        'https://discord.com/api/webhooks/794660845232848946/3B4UaxHTD_UyfDu_B79FaWeOuXQlctjvxY_pU6a7G2D58OU6qXepzlHpvQF4O2tM35g-',
-        'https://discord.com/api/webhooks/810373216547766282/GFAS8enTYSoc58vqd7j3_ehrCT8odat8J1LuuAzluTtjxlAOLCNBQtsx7mhiMVC7BTqk',
-        'https://discord.com/api/webhooks/810373281127333928/Jpmrq9VUp9pQZLgD3RdDIxN-xP_ZuHUSqoWYUgpYIxeTBpS0HVhdotX9tepYDlMQmnMi',
-        'https://discord.com/api/webhooks/810373348776476683/h_uJLBBlHzD0w_CG0nUajFO-XEh3fvy-vQofQt1_8TMD7zHiR7a28t3jF-xBCP6EVlow',
-        'https://discord.com/api/webhooks/810373405508501534/wovhf-1pqcxW5h9xy7iwkYaf8KMDjHU49cMWuLKtBWjAnj-tzS1_j8RJ7tsMyViDbZCE',
-        'https://discord.com/api/webhooks/796558388326039552/k2VV356S1gKQa9ht-JuAs5Dqw5eVkxgZsLUzFoxmFG5lW6jqKl7zCBbbKVhs3pcLOetm',
-        'https://discord.com/api/webhooks/810373566452858920/Qf2V8BoLOy2kQzlZGHy5HZ1nTj7lK72ol_UFrR3_eHKEOK5fyR_fQ8Yw8YzVh9EQG54o',
-        'https://discord.com/api/webhooks/810373654411739157/SGgdO49OCkTNIlc_BSMSy7IXQwwXVonG3DsVfvBVE6luTCwvgCqEBpEk30WBeMMieCyI',
-        'https://discord.com/api/webhooks/810373722341900288/FwcRJ4YxYjpyHpnRwF5f2an0ltEm8JPqcWeZqQi3Qz4QnhEY-kR2sjF9fo_n6stMGnf_',
-        
-        'https://discord.com/api/webhooks/810374116652744704/93MJfYgZSUF8M40Rnk_UoZEbLv0IbXdQjoZBDRJzHxbxq0YyOo9ngh2p6iJ6BjTkymQL',
-        'https://discord.com/api/webhooks/810374206168104960/Xv4p9xRH5W3Fmb7aqzDG22svg5oAc15jyMU-1iPR9yK7HmO4X9efqWclR48yf_lwX0HO',
-        'https://discord.com/api/webhooks/810374244222500864/4xbuvs5F9tpaIuXOSF41Io7hhE0GvNO-Di__vudmAU3TDyYL-PFmwfS4jVfkbrJzNgap',
-        'https://discord.com/api/webhooks/810374294416654346/T3-TEdKIg7rwMZeDzNr46KPDvO7ZF8pRdJ3lfl39lJw2XEZamAG8uACIXagbNMX_B0YN',
-        'https://discord.com/api/webhooks/810374337403289641/_esFkQXwlPlhxJWtlqDAdLg2Nujo-LjGPEG3mUmjiRZto69NQpkBJ0F2xtSNrCH4VAgb',
-        'https://discord.com/api/webhooks/810374384736534568/mH5-OkBVpi7XqJioaQ8Ma-NiL-bOx7B5nYJpL1gZ03JaJaUaIW4bCHeCt5O_VGLJwAtj',
-        'https://discord.com/api/webhooks/810374428604104724/Z1Tdxz3mb0ytWq5LHWi4rG5CeJnr9KWXy5aO_waeD0NcImQnhRXe7h7ra7UrIDRQ2jOg',
-        'https://discord.com/api/webhooks/810374475773509643/QCPPN4djNzhuOmbS3DlrGBunK0SVR5Py9vMyCiPL-0T2VPgitFZS4YM6GCLfM2fkrn4-',
-        'https://discord.com/api/webhooks/810374527652855819/5ypaKI_r-hYzwmdDlVmgAU6xNgU833L9tFlPnf3nw4ZDaPMSppjt77aYOiFks4KLGQk8',
-        'https://discord.com/api/webhooks/810374587917402162/lHrG7CEysGUM_41DMnrxL2Q8eh1-xPjJXstYE68WWfLQbuUAV3rOfsNB9adncJzinYKi',
-    ]
+    from support.base.discord import webhook_list
+    app.config['DEFINE']['WEBHOOK_LIST_FOR_IMAGE_PROXY'] = webhook_list
     
     #2020-05-27 23번방부터 32번방 삭제
     #2020-08-31 29, 30, 31번 삭제

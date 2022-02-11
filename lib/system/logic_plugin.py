@@ -185,10 +185,8 @@ class LogicPlugin(object):
         logger.debug('plugin_git : %s', plugin_git)
         logger.debug('zip_url : %s', zip_url)
         logger.debug('zip_filename : %s', zip_filename)
-
         
         is_git = True if plugin_git != None and plugin_git != '' else False
-        
         ret = {}
         try:
             if is_git:
@@ -199,12 +197,13 @@ class LogicPlugin(object):
             custom_path = os.path.join(path_data, 'custom')
             plugin_path = os.path.join(custom_path, name)
             logger.debug(plugin_path)
+            plugin_info = None
             if os.path.exists(plugin_path):
                 ret['ret'] = 'already_exist'
                 ret['log'] = '이미 설치되어 있습니다.'
             else:
-                if is_git:
-                    for tag in ['master', 'main']:
+                if plugin_git and plugin_git.startswith('http'):
+                    for tag in ['main', 'master']:
                         try:
                             info_url = plugin_git.replace('github.com', 'raw.githubusercontent.com') + '/%s/info.json' % tag
                             plugin_info = requests.get(info_url).json()
@@ -212,7 +211,7 @@ class LogicPlugin(object):
                                 break
                         except:
                             pass
-                else:
+                if zip_filename and zip_filename != '':
                     import zipfile
                     from tool_base import ToolBaseFile
                     zip_filepath = os.path.join(path_data, 'tmp', zip_filename)
@@ -220,15 +219,14 @@ class LogicPlugin(object):
                     logger.error(zip_url)
                     logger.warning(zip_filepath)
                     if ToolBaseFile.download(zip_url, zip_filepath):
-                        logger.warning(os.path.exists(zip_filepath))
+                        #logger.warning(os.path.exists(zip_filepath))
                         with zipfile.ZipFile(zip_filepath, 'r') as zip_ref:
                             zip_ref.extractall(extract_filepath)
                         plugin_info_filepath = os.path.join(extract_filepath, 'info.json')
                         if os.path.exists(plugin_info_filepath):
                             plugin_info = ToolBaseFile.read_json(plugin_info_filepath)
-                        else:
-                            plugin_info = {}
-
+                if plugin_info == None:
+                    plugin_info = {}
                 flag = True
                 if 'platform' in plugin_info:
                     if platform.system() not in plugin_info['platform']:
@@ -252,12 +250,16 @@ class LogicPlugin(object):
                         flag = False
 
                 if flag:
-                    if is_git :
+                    if plugin_git and plugin_git.startswith('http'):
                         command = ['git', '-C', custom_path, 'clone', plugin_git + '.git', '--depth', '1']
                         log = Util.execute_command(command)
-                    else:
+                    if zip_filename and zip_filename != '':
                         import shutil
-                        shutil.move(extract_filepath, plugin_path)
+                        if os.path.exists(plugin_path) == False:
+                            shutil.move(extract_filepath, plugin_path)
+                        else:
+                            for tmp in os.listdir(extract_filepath):
+                                shutil.move(os.path.join(extract_filepath, tmp), plugin_path)
                         log = ''
                     logger.debug(plugin_info)
                     # 2021-12-31

@@ -1,6 +1,6 @@
 __pycache__/
 .git/
-
+tmp/
 data/
 pyvenv/
 false/
@@ -14,3 +14,6 @@ false/
 *.txt
 *.code-workspace
 *.pem
+*.log.*
+C/
+lib/sc_source/
