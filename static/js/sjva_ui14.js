@@ -57,6 +57,17 @@ function m_button(id, text, data) {
   return str;
 }
 
+function m_button2(id, text, data, outline_color) {
+  var str = '<button id="'+id+'" name="'+id+'" class="btn btn-sm btn-outline-'+outline_color+'" '
+  for ( var i in data) {
+    str += ' data-' + data[i].key + '="' + data[i].value+ '" '
+  }
+  str += '>' + text + '</button>';
+  return str;
+}
+
+
+
 
 function m_hr(margin='5') {
   var str = '<hr style="width: 100%; margin:'+margin+'px;" />';
