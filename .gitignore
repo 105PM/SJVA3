@@ -17,3 +17,5 @@ false/
 *.log.*
 C/
 lib/sc_source/
+rclone2/
+gda_tool/
